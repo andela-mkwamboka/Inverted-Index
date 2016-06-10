@@ -24,7 +24,9 @@ describe('Inverted Index Tests', function() {
       expect(index.getIndex().length).toBeGreaterThan(0);
     });
     it('Ensures index is correct', function() {
-      expect(index.searchIndex('alice')).toEqual([0]);
+    	expect(index.getIndex()).toBeDefined();
+    	expect(Object.keys(index.getIndex()[0])).toEqual(['alice']);
+    	expect(index.getIndex()[0]['alice']).toEqual([0]);
     });
 
   });
@@ -33,4 +35,5 @@ describe('Inverted Index Tests', function() {
       expect(index.searchIndex([' ', 'alice', 'wonderland', 'lord', 'priest'])).toEqual([0, 0, 1, -1]);
     })
   });
+
 });

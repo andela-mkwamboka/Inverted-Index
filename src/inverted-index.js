@@ -36,11 +36,11 @@ function Index() {
      */
     books.forEach(function(book, i) {
       for (var key in book) {
-        book[key] = book[key].toLowerCase().split(' ').filter(function(element) {
+        var bookContent = book[key].toLowerCase().split(' ').filter(function(element) {
           return stop_words.indexOf(element) == -1;
         });
         // Loop through the book content array to get individual word
-        book[key].forEach(function(word) {
+        bookContent.forEach(function(word) {
 
           var ok = false;
           // Checking if the index is empty
