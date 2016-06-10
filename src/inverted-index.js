@@ -41,15 +41,36 @@ function Index() {
         });
         // Loop through the book content array to get individual word
         book[key].forEach(function(word) {
-          // Storing word and index in the index array
-          index = index.concat({
-            [word]: [].concat(i)
-          });
+
+          var ok = false;
+          // Checking if the index is empty
+          if (index.length) {
+            /* Executed on the second loop:
+            * 1. Looping through the index 
+            * 2. Checking if word exists 
+            * 3. Concatinating index if it is unique
+            */
+            index.forEach(function(obj) {
+              if (obj.hasOwnProperty(word)) {
+                obj[word] = obj[word].concat(i).filter(function(v, ind, arr) {
+                  return arr.indexOf(v) == ind;
+                });
+                ok = true;
+              }
+            });
+          }
+          // Executed on the first loop
+          if (!ok) {
+            index = index.concat({
+              [word]: [].concat(i)
+            });
+          }
         });
       }
 
     });
-    return index;
+    this.indexes = index;
+    return this.indexes;
   };
 };
 var x = new Index();
