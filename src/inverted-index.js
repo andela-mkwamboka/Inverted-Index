@@ -15,14 +15,19 @@ function Index() {
     return fetch(filepath)
       .then(function(response) {
         //Converting raw data to json
-        return response.json();
+        if(response.status == 200) {
+          return response.json();
+        } else {
+          throw response;
+        }
       }).then(function(jsonData) {
         //Returns a javascript object
         self.bks = jsonData;
         return self.bks;
-      }).catch(function(err) {
+      }).catch(function() {
         // Log error if promise is rejected
         console.log('File cannot be read');
+        // return err;÷
       });
   };
 
@@ -132,16 +137,20 @@ function Index() {
           });
         } else {
           console.log('Invalid search term');
+          break;
         };
       });
       return results;
+    }else{
+      console.log('You need to search for a term');
+      break;
     };
   };
 };
 var x = new Index();
 x.createIndex('../jasmine/books.json')
   // Resolving the promise
-  .then(function() {
+  .then(function(data) {
     x.getIndex();
     x.searchIndex();
-  });
+  })
