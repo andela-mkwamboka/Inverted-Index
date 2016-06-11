@@ -46,10 +46,10 @@ function Index() {
           // Checking if the index is empty
           if (index.length) {
             /* Executed on the second loop:
-            * 1. Looping through the index 
-            * 2. Checking if word exists 
-            * 3. Concatinating index if it is unique
-            */
+             * 1. Looping through the index 
+             * 2. Checking if word exists 
+             * 3. Concatinating index if it is unique
+             */
             index.forEach(function(obj) {
               if (obj.hasOwnProperty(word)) {
                 obj[word] = obj[word].concat(i).filter(function(v, ind, arr) {
@@ -62,6 +62,7 @@ function Index() {
           // Executed on the first loop
           if (!ok) {
             index = index.concat({
+              // Concat to a new empty Array
               [word]: [].concat(i)
             });
           }
@@ -72,10 +73,75 @@ function Index() {
     this.indexes = index;
     return this.indexes;
   };
+  this.searchIndex = function() {
+    var theIndex = this.indexes;
+    var results = [];
+    // Checking if arguments have been passed
+    if (arguments.length) {
+      //  Format
+      var format = function(word){
+        return word.toLowerCase().split(' ').filter(function(element) {
+              return stop_words.indexOf(element) == -1;
+            });
+      }
+      // Returning Index of search terms
+      var search = function(index, oneWord) {
+        found = false;
+        if (theIndex && oneWord) {
+          theIndex.forEach(function(value) {
+            if (value.hasOwnProperty(oneWord)) {
+              found = true;
+              results.push(...value[oneWord]);
+            };
+          });
+          if (!found) {
+            results.push(-1);
+          };
+        };
+      };
+      /*
+       * 1. Loop through the args to get each term
+       * 2. Check the type of the term
+       * 3. If a string
+       * 4. Split the term in ' '
+       * 5. Loop through the splitted terms
+       * 6. Search for the term
+       * 7. Else if array: 
+       * 8. loop through the array, toLowerCase() search
+       */
+      var args = Array.from(arguments);
+      args.forEach(function(terms) {
+        if (typeof terms === 'string') {
+          //  Format word to remove stop word and rswitch to lowercase
+          var newTerm = format(terms);
+      
+          for (var word in newTerm) {
+            var findWord = newTerm[word].replace(/[.,?\s]/g, '');
+            search(theIndex, findWord);
+          }
+          // console.log(theIndex);
+        } else if (Array.isArray(terms)) {
+          // Loop through the array
+          terms.forEach(function(element) {
+            //  Format word to remove stop word and switch to lowercase
+            element = format(element);
+            // Search word
+            element.forEach(function(oneWord) {
+              search(theIndex, oneWord);
+            }); 
+          });
+        } else {
+          console.log('Invalid search term');
+        };
+      });
+      return results;
+    };
+  };
 };
 var x = new Index();
 x.createIndex('../jasmine/books.json')
   // Resolving the promise
   .then(function() {
-    console.log(x.getIndex());
+    x.getIndex();
+    x.searchIndex();
   });
