@@ -88,7 +88,7 @@ function Index() {
         return word.toLowerCase().split(' ').filter(function(element) {
               return stop_words.indexOf(element) == -1;
             });
-      }
+      };
       // Returning Index of search terms
       var search = function(index, oneWord) {
         found = false;
@@ -97,12 +97,12 @@ function Index() {
             if (value.hasOwnProperty(oneWord)) {
               found = true;
               results.push(...value[oneWord]);
-            };
+            }
           });
           if (!found) {
             results.push(-1);
-          };
-        };
+          }
+        }
       };
       /*
        * 1. Loop through the args to get each term
@@ -137,20 +137,18 @@ function Index() {
           });
         } else {
           console.log('Invalid search term');
-          break;
-        };
+        }
       });
       return results;
     }else{
       console.log('You need to search for a term');
-      break;
-    };
+    }
   };
-};
+}
 var x = new Index();
 x.createIndex('../jasmine/books.json')
   // Resolving the promise
-  .then(function(data) {
+  .then(function() {
     x.getIndex();
     x.searchIndex();
-  })
+  });

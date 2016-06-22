@@ -3,5 +3,5 @@
   "eqnull": true,
   "undef": true,
   "unused": true,
-  "noempty":true,
+  "noempty":true
 }

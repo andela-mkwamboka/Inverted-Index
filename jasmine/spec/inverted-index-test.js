@@ -33,7 +33,7 @@ describe('Inverted Index Tests', function() {
   describe('Search index', function() {
     it('Verifies that search index returns an array ', function() {
       expect(index.searchIndex([' ', 'alice', 'wonderland', 'lord', 'priest'])).toEqual([0, 0, 1, -1]);
-    })
+    });
   });
 
 });
