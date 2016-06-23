@@ -144,12 +144,12 @@ function Index() {
             element = format(element);
             // Search word
             element.forEach(function(oneWord) {
-              search(theIndex, oneWord);
+              search( oneWord);
             });
           });
         } else {
           // Invalid search term;
-          return null;
+          return results = null;
         }
       });
       return results;
@@ -159,6 +159,3 @@ function Index() {
     }
   }
 };
-
-
-

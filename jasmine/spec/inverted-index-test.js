@@ -34,9 +34,15 @@ describe('Populate Index', function() {
 });
 describe('Search index', function() {
   it('Verifies that search index returns an array ', function() {
+    expect(index.searchIndex(['123' , ' ' , 'alice' , 'wonderland' , 'lord'])).toEqual([-1, 0, 0, 1]);
     expect(index.searchIndex('alice wonderland lord')).toEqual([0, 0, 1]);
     expect(index.searchIndex('people')).toEqual([-1]);
     expect(index.searchIndex('123')).toEqual([-1]);
     expect(index.searchIndex()).toEqual(false);
+    expect(index.searchIndex(123)).toEqual(null);
+
+
+
+    
   });
 });
