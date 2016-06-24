@@ -1,13 +1,14 @@
-function Index() {
+function Index () {
     this.bookArray = [];
     var self = this;
 
     var index = [];
     var stop_words = ['a', 'about', ',', 'above', 'into', 'across', 'of', 'the',
-        'to', 'in', 'and', 'the', 'an', ' ', '.'
+        'to', 'in', 'and', 'the', 'an', ' ', '.', '?', '!'
     ];
 
-    this.fetchJson = function (filepath) {
+
+    this.fetchJSON = function (filepath) {
         // Fetch returns a promise
         // 1. Takes in a file path
         // 2. Uses fetch API to request for the json file
@@ -15,13 +16,13 @@ function Index() {
 
         return fetch(filepath)
             .then(function (response) {
-                // Converting raw data to json
+                // Convert raw data to json
                 if (response.status === 200) {
                     return response.json();
                 }
-            }).then(function (jsonData) {
+            }).then(function (data) {
                 // Returns a javascript object
-                self.bookArray = jsonData;
+                self.bookArray = data;
                 return self.bookArray;
             }).catch(function (err) {
                 // Return error if promise is rejected
@@ -31,23 +32,25 @@ function Index() {
 
     this.createIndex = function (filepath) {
         // resolving the promise and returning books a javascript object from the Json file
-        return this.fetchJson(filepath)
+        return this.fetchJSON(filepath)
             .then(function (books) {
-                // 1. Looping through the Javascript Object getting the index of each book object
-                // 2. Looping through the book to get book content
+                // 1. Loop through the Javascript Object getting the index of each book object
+                // 2. Loop through the book to get book content
                 // 3. Reformat string to lowercase and removing stop words [ Split returns array]
 
                 books.forEach(function (book, bookIndex) {
                     for (var key in book) {
                         var bookContent = book[key]
                             .toLowerCase()
+                            .replace(/[,.?!]/g, '')
                             .split(' ')
-                            .filter(function (element) {
+                            .filter(function(element) {
                                 return stop_words.indexOf(element) === -1;
                             });
                         // Loop through the book content array to get individual word
-                        bookContent.forEach (function(word) {
+                        bookContent.forEach(function (word) {
                             var ok = false;
+
                             // Checking if the index is empty
                             if (index.length) {
                                 // Executed on the second loop:
@@ -55,7 +58,7 @@ function Index() {
                                 // 2. Checking if word exists
                                 // 3. Concatinating index if isn't found
                                 index.forEach(function (obj) {
-                                    if (obj.hasOwnProperty(word)) {
+                                    if (obj.hasOwnProperty (word)) {
                                         if (obj[word].indexOf(bookIndex) === -1) {
                                             obj[word] = obj[word].concat(bookIndex);
                                         }
@@ -75,7 +78,7 @@ function Index() {
                     }
                 });
                 return index;
-            }).catch(function (error) {
+            }).catch(function(error) {
                 return error;
             });
     };
@@ -91,7 +94,10 @@ function Index() {
         if (arguments.length) {
             //  Format
             var format = function (word) {
-                return word.toLowerCase().split(' ').filter(function (element) {
+                return word.toLowerCase()
+                .replace(/[,.?!]/g, '')
+                .split(' ')
+                .filter(function (element) {
                     return stop_words.indexOf(element) === -1;
                 });
             };
@@ -134,7 +140,7 @@ function Index() {
                     // Loop through the array
                     terms.forEach(function (element) {
                         //  Format word to remove stop word and switch to lowercase
-                        element = format(element);
+                        element = format (element);
                         // Search word
                         element.forEach(function (oneWord) {
                             search(oneWord);
@@ -145,7 +151,6 @@ function Index() {
                     results = false;
                 }
             });
-            console.log(results);
             return results;
         } else {
             // You need to search for a term
