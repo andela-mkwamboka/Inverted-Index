@@ -3,7 +3,7 @@ describe('Read book data', function() {
     it('Asserts that json file is not empty', function(done) {
         // Resolving the promise from the createIndex method 
         // Data is the a Javascript object with the Json data
-        index.fetchJson('../jasmine/books.json').then(function(data) {
+        index.fetchJSON('../jasmine/books.json').then(function(data) {
             expect(data).toBeDefined();
             expect(typeof data).toEqual('object');
             expect(data.length).toBeGreaterThan(0);
