@@ -1,7 +1,0 @@
-{
-  "curly": true,
-  "eqnull": true,
-  "undef": true,
-  "unused": true,
-  "noempty":true
-}
