@@ -88,7 +88,7 @@ function Index () {
 
   this.searchIndex = function () {
     var theIndex = this.getIndex();
-    var results = [];
+    var results = {};
     // Checking if arguments are passed
     if(arguments.length) {
       // Retutn Index of search terms
@@ -96,13 +96,13 @@ function Index () {
         var found = false;
         if (theIndex && oneWord) {
           theIndex.forEach(function (indexObject) {
-            if (indexObject.hasOwnProperty(oneWord)) {
+            if(indexObject.hasOwnProperty(oneWord)) {
+              results[oneWord] = indexObject[oneWord];
               found = true;
-              results = results.concat(indexObject[oneWord]);
             }
           });
           if (!found) {
-            results.push(-1);
+            results[oneWord] = null;
           }
         }
       };
